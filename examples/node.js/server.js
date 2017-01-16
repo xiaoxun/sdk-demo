@@ -21,6 +21,7 @@ router.get('/', function *() {
       avatar: 'https://dn-shimo-avatar.qbox.me/7JJPV7OrVSKHZUpb.jpeg!avatar'
     },
     sdkJsUrl: 'https://assets-cdn.shimo.im/assets/scripts/sdk-1.0.0.alpha.js'
+    // sdkJsUrl: 'http://localhost:3011/dist/sdk-1.0.0.alpha.js'
   });
 });
 

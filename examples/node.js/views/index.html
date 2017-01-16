@@ -5,11 +5,18 @@
   <style type="text/css" title="dynamicsyntax"></style>
 </head>
 <body>
-<button id="create"> 创建文档 </button>
+<ol id="nav">
+  <li><button id="create">创建文档</button></li>
+  <li>或者</li>
+  <li><input type="text" placeholder="输入文档 guid" id="jump-document-guid" /> <button id="jump">跳转到文档</button></li>
+</ol>
+<p id="document-info" style="display: none;">
+当前文档: <span id="document-title"></span>, guid: <span id="document-guid"></span>
+</p>
+
 <div id="container"></div>
 <script src="http://code.jquery.com/jquery-2.2.4.js"></script>
-<!--<script type="text/javascript" src="<%= sdkJsUrl %>"></script>-->
-<script src="http://localhost:3011/dist/sdk-1.0.0.alpha.js"></script>
+<script type="text/javascript" src="<%= sdkJsUrl %>"></script>
 <script>
   if (typeof window.Shimo === 'undefined') {
     alert('SDK javascript 文件加载失败');
@@ -20,6 +27,12 @@
   };
 </script>
 <script type="text/javascript">
+  function showDocumentInfo(editor) {
+    $('#document-guid').text(editor.guid);
+    $('#document-title').text(editor.name);
+    $('#document-info').show();
+  }
+
   window.onload = function () {
     const Editor = new Shimo({
       appId: window.test.appKey,
@@ -28,12 +41,25 @@
     });
 
     document.getElementById('create').addEventListener('click', () => {
-      Editor.create('有标题').then(result => {
+      Editor.create('无标题').then(result => {
+        showDocumentInfo(result);
         Editor.start({
           containerId: 'container',
           guid: result.guid
         });
+        $('#nav').hide();
       });
+    })
+
+    document.getElementById('jump').addEventListener('click', () => {
+      Editor.fetch($('#jump-document-guid').val()).then(result => {
+        showDocumentInfo(result);
+        Editor.start({
+          containerId: 'container',
+          guid: result.guid
+        });
+        $('#nav').hide();
+      }).catch(err => { alert(err.message); });
     })
   };
 </script>
