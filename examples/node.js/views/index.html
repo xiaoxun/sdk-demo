@@ -7,6 +7,7 @@
 <body>
 <button id="create"> 创建文档 </button>
 <div id="container"></div>
+<script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="<%= sdkJsUrl %>"></script>
 <script>
   if (typeof window.Pad === 'undefined') {
@@ -27,11 +28,9 @@
 
     document.getElementById('create').addEventListener('click', () => {
       Editor.create('有标题').then(result => {
-        Editor.fetch(result.guid).then(result => {
-          Editor.render({
-            containerId: 'container',
-            file: result.data
-          });
+        Editor.start({
+          containerId: 'container',
+          guid: result.guid
         });
       });
     })
