@@ -1,0 +1,30 @@
+{
+  "name": "sdk-demo",
+  "version": "1.0.0",
+  "description": "石墨文档 SDK 是一个基于 javascript 的 SDK，只需要在您的网页里引用一个 js 文件，就可以使用石墨文档提供的：",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimohq/sdk-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shimohq/sdk-demo/issues"
+  },
+  "homepage": "https://github.com/shimohq/sdk-demo#readme",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-bodyparser": "^2.3.0",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
+    "koa-views": "^4.1.0",
+    "lodash": "^4.17.4"
+  }
+}

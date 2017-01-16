@@ -6,7 +6,7 @@
 2. 划词评论
 3. 历史还原
 
-后续还会根据需求的规划以及开发迭代，会逐步增加诸如文档导入与导出等其他功能。
+暂时没有文件管理和成员管理的功能，后续会根据需求的规划以及开发迭代，会逐步增加诸如文档导入与导出等其他功能。
 
 ## 接入流程
 
@@ -87,6 +87,7 @@ const editor = new Shimo({
 ###### 签名代码示例(node.js):
 
 ```javascript
+// 本代码位于 `./examples/node.js/lib/sign.js`
 const crypto = require('crypto');
 const _ = require('lodash');
 
@@ -123,4 +124,9 @@ function filterObject(obj) {
 }
 ```
 
+#### DEMO
 
+##### node.js
+`cd examples/node.js/`
+`node server.js`, 如需修改端口号请使用 `PORT=3111 node server.js`
+浏览器中方位 `http://localhost:3012`

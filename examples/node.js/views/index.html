@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>sdk-demo</title>
+  <style type="text/css" title="dynamicsyntax"></style>
+</head>
+<body>
+<button id="create"> 创建文档 </button>
+<div id="container"></div>
+<script type="text/javascript" src="<%= sdkJsUrl %>"></script>
+<script>
+  if (typeof window.Pad === 'undefined') {
+    alert('SDK javascript 文件加载失败');
+  }
+  window.test = {
+    appKey: '<%= appKey %>',
+    user: <%- JSON.stringify(user) %>
+  };
+</script>
+<script type="text/javascript">
+  window.onload = function () {
+    const Editor = new Pad({
+      appId: window.cow.appKey,
+      user: window.test.user,
+      signUrl: 'http://localhost:3012/sign'
+    });
+
+    document.getElementById('create').addEventListener('click', () => {
+      Editor.create('有标题').then(result => {
+        Editor.fetch(result.guid).then(result => {
+          Editor.render({
+            containerId: 'container',
+            file: result.data
+          });
+        });
+      });
+    })
+  };
+</script>
+</body>
+</html>
