@@ -7,10 +7,11 @@
 <body>
 <button id="create"> 创建文档 </button>
 <div id="container"></div>
-<script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script type="text/javascript" src="<%= sdkJsUrl %>"></script>
+<script src="http://code.jquery.com/jquery-2.2.4.js"></script>
+<!--<script type="text/javascript" src="<%= sdkJsUrl %>"></script>-->
+<script src="http://localhost:3011/dist/sdk-1.0.0.alpha.js"></script>
 <script>
-  if (typeof window.Pad === 'undefined') {
+  if (typeof window.Shimo === 'undefined') {
     alert('SDK javascript 文件加载失败');
   }
   window.test = {
@@ -20,8 +21,8 @@
 </script>
 <script type="text/javascript">
   window.onload = function () {
-    const Editor = new Pad({
-      appId: window.cow.appKey,
+    const Editor = new Shimo({
+      appId: window.test.appKey,
       user: window.test.user,
       signUrl: 'http://localhost:3012/sign'
     });
