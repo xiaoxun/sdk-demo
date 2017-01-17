@@ -17,7 +17,7 @@
 页面上加载石墨文档 SDK 之前需要先引入 `jQuery@2.2.4` 或以上版本：
 ```html
 <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="https://assets-cdn.shimo.im/assets/scripts/sdk-1.0.0.alpha.js"></script>
+<script src="https://assets-cdn.shimo.im/assets/scripts/sdk-1.0.0.alpha.debug.js"></script>
 ```
 
 ### 初始化SDK
