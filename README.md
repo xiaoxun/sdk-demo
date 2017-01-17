@@ -67,9 +67,11 @@ const editor = new Shimo({
 **名词定义** 客户端: 第三方应用程序; 服务端: 石墨 SDK 服务器; 用户端: 用户浏览器
 
 
-#### 签名
+##### 签名
 
-#### 签名流程:
+签名流程:
+
+
 1. 将待发送请求的 queryString 和 formData 拼接成一个对象
 1. 生成一个秒为单位的时间戳(有效时间15分钟) timestamp
 1. 生成一个长度至少为 5 的随机字符串 nonce
@@ -84,7 +86,9 @@ const editor = new Shimo({
 
 > 注: 也可以使用 queryString `_clientId` 和 `_signature` 参数来传 appKey 和 signature
 
-###### 签名代码示例(node.js):
+
+签名代码示例(node.js):
+
 
 ```javascript
 // 本代码位于 `./examples/node.js/lib/sign.js`
@@ -121,6 +125,169 @@ function _sign(obj, secret) {
 function filterObject(obj) {
   const signKeys = Object.keys(obj).filter(str => !str.startsWith('_'));
   return _.pick(obj, signKeys);
+}
+```
+
+##### 获取文档列表
+- method: `GET`
+- url: `editors/:guid`
+- return: `[{ name, guid, head, pool, content, type, createdAt, updatedAt }, ...]`
+
+
+##### 获取单个文档
+- method: `GET`
+- url: `editors/:guid`
+- return: `{ name, guid, head, pool, content, type, createdAt, updatedAt }`
+
+
+##### 创建文档
+- method: `POST`
+- url: `editors`
+- formData: `{ name: 'the name' }`
+- return: `{ name, guid, head, pool, content, type, createdAt, updatedAt }`
+
+
+##### 修改文档
+- method: `PATCH`
+- url: `editors/:guid`
+- formData: `{ name: 'the name' }`
+- return: `{ name: 'the name' }`
+
+
+##### 删除文档
+- method: `DELETE`
+- url: `editors/:guid`
+- return: status-204
+
+
+##### 获取文档历史
+- method: `GET`
+- url: `editors/:guid/histories`
+- queryString: `{ [lastGuid], [limit=20] }` lastGuid: 上次结果的最后一条记录的 guid, limit: 每次显示条数
+- return: `[{ histories: [{ content, deltedAt, guid, type, updatedAt, createdAt }, ...], pool: {...} }]`
+
+
+##### 获取文档评论概要 (组guid和对应评论数量)
+- method: `GET`
+- url: `editors/:guid/comments/summary`
+- return: `[ { groupGuid: 'xxx', count: 2 }, ...]`
+
+
+##### 获取文档所有评论
+- method: `GET`
+- url: `editors/:guid/comments`
+- return: `[ { guid, groupGuid, content, title, User({ name, avatar, guid }) } ...]`
+
+
+##### 还原历史
+- method: `POST`
+- url: `editors/:guid/revert`
+- formData: `{ historyGuid }`
+- return `{ ok: true }`
+
+
+##### 获取某选区的评论列表
+- method: `GET`
+- url: `editors/:guid/comments/groups/:groupGuid`
+- return: `[ { guid, groupGuid, content, title, User({ name, avatar, guid }) } ...]`
+
+
+##### 删除某选区的所有评论
+- method: `DELETE`
+- url: `editors/:guid/comments/groups/:groupGuid`
+- return: status-204
+
+
+##### 创建评论
+- method: `POST`
+- url: `editors/:guid/comments`
+- formData: `{ groupGuid, title, content }`
+- return: `{ guid, groupGuid, title, content }`
+
+
+##### 删除某条评论
+- method: `DELETE`
+- url: `editors/:guid/comments/:commentGuid`
+- return: status-204
+
+
+##### 批量上传图片
+- method: `POST`
+- url: `editors/:guid/images/prepare`
+- formData: `{ fileNames: ['aaa.png', ...] }`
+- return: `[{ token, key }, '...']`
+
+
+##### 批量上传附件
+- method: `POST`
+- url: `editors/:guid/attachments/prepare`
+- formData: `{ fileNames: ['aaa.zip', ...] }`
+- return: `[{ token, key }, '...']`
+
+
+##### 下载附件
+- method: `GET`
+- url: `editors/:guid/attachments/:attachmentGuid`
+- return: redirect
+
+
+##### 删除附件
+- method: `DELETE`
+- url: `editors:/guid/attachments/:attachmentGuid`
+- return: status-204
+
+
+##### 获取编写者列表
+- method: `GET`
+- url: `editors:/guid/collaborators`
+- return: `[{ guid, name, avatar }, ...]`
+
+
+
+## socket.io 推送内容和格式(仅限文档内)
+
+##### 文档修改推送
+```javascript
+{
+  type: 'editor',
+  action: 'update',
+  data: { guid, name, head, type, createdAt, updatedAt, deletedAt }
+}
+```
+
+##### 文档删除推送
+```javascript
+{
+  type: 'editor',
+  action: 'delete',
+  data: { guid }
+}
+```
+
+##### 创建评论推送
+```javascript
+{
+  type: 'comment',
+  action: 'create',
+  data: { guid, title, groupGuid, content, User({ guid, name, avatar }) }
+}
+```
+
+##### 删除评论推送
+```javascript
+{
+  type: 'comment',
+  action: 'delete',
+  data: { guid }
+}
+```
+
+##### 批量删除评论推送
+```javascript
+{
+  type: 'comment',
+  action: 'bulkDelete',
+  data: { groupGuid }
 }
 ```
 
