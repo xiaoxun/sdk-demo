@@ -21,7 +21,7 @@ app.use(function *(next) {
     _.assign(this.request.body, this.req.body || {});
     yield next;
   } else {
-    yield bodyParser.bind(this)(next);
+    yield bodyParser().bind(this)(next);
   }
 });
 
