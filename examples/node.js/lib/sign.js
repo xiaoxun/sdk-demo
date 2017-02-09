@@ -17,13 +17,11 @@ function _sign(obj, secret) {
     .concat([secret])
     .join(':');
 
-  console.log(plainText);
   return crypto.createHash('sha512').update(plainText).digest('hex').toLowerCase();
 }
 
 // Client server sign
 function sign(obj, secret) {
-  console.log(obj)
   const nonce = Math.random().toString(36);
   const timestamp = parseInt(Date.now() / 1000, 10);
   const signature = _sign(_.assign({}, filterObject(obj), { nonce, timestamp }), secret);

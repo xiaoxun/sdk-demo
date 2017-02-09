@@ -3,6 +3,7 @@
 const appKey = 'shimo-sdk-test-key';
 const secret = 'shimo-sdk-test-secret';
 
+const _ = require('lodash');
 const http = require('http');
 const koa = require('koa');
 const is = require('type-is');

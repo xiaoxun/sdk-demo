@@ -74,7 +74,7 @@
         $('#nav').hide();
       }).catch(err => { alert(err.message); });
     })
-    document.getElementById('sm-upload').addEventListener('change', Editor.import.bind(Editor));
+    document.getElementById('sm-upload').addEventListener('change', Editor.import.bind(Editor, 'container'));
   };
 </script>
 </body>
