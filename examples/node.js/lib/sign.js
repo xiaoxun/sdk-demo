@@ -3,9 +3,9 @@
 const _ = require('lodash');
 const crypto = require('crypto');
 
-// Remove keys that starts with _
+// Remove keys that starts with _ and (non-number and non-string)
 function filterObject(obj) {
-  const signKeys = _.keys(obj).filter(str => !str.startsWith('_'));
+  const signKeys = _.keys(obj).filter(str => !str.startsWith('_') && (_.isNumber(obj) || _.isString(obj)));
   return _.pick(obj, signKeys);
 }
 
@@ -17,11 +17,13 @@ function _sign(obj, secret) {
     .concat([secret])
     .join(':');
 
+  console.log(plainText);
   return crypto.createHash('sha512').update(plainText).digest('hex').toLowerCase();
 }
 
 // Client server sign
 function sign(obj, secret) {
+  console.log(obj)
   const nonce = Math.random().toString(36);
   const timestamp = parseInt(Date.now() / 1000, 10);
   const signature = _sign(_.assign({}, filterObject(obj), { nonce, timestamp }), secret);

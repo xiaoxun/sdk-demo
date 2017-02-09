@@ -8,6 +8,18 @@
 <ol id="nav">
   <li><button id="create">创建文档</button></li>
   <li>或者</li>
+  <li><form
+    encType="multipart/form-data"
+    method="post"
+    action="javascript:;"
+    role="form"
+    id="sm-upload">
+      <input
+        type="file"
+        name="files"
+        accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"/>
+  </form></li>
+  <li>或者</li>
   <li><input type="text" placeholder="输入文档 guid" id="jump-document-guid" /> <button id="jump">跳转到文档</button></li>
 </ol>
 <p id="document-info" style="display: none;">
@@ -16,7 +28,8 @@
 
 <div id="container"></div>
 <script src="http://code.jquery.com/jquery-2.2.4.js"></script>
-<script type="text/javascript" src="<%= sdkJsUrl %>"></script>
+<!--<script type="text/javascript" src="<%= sdkJsUrl %>"></script>-->
+<script src="http://localhost:3011/dist/assets/scripts/sdk-1.0.0.alpha.debug.js"></script>
 <script>
   if (typeof window.Shimo === 'undefined') {
     alert('SDK javascript 文件加载失败');
@@ -61,6 +74,7 @@
         $('#nav').hide();
       }).catch(err => { alert(err.message); });
     })
+    document.getElementById('sm-upload').addEventListener('change', Editor.import.bind(Editor));
   };
 </script>
 </body>

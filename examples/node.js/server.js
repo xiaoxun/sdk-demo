@@ -38,6 +38,18 @@ router.get('/', function *() {
   });
 });
 
+router.get('/second', function *() {
+  yield this.render('index', {
+    appKey: appKey,
+    user: {
+      id: 2,
+      name: 'Edison',
+      avatar: 'https://dn-shimo-avatar.qbox.me/mSyE6bstILMyr5iz.gif!avatar'
+    },
+    sdkJsUrl: 'https://assets-cdn.shimo.im/assets/scripts/sdk-1.0.0.alpha.js'
+  });
+});
+
 // Recieve merged formData & queryString, return { signature, nonce, timestamp }
 router.post('/sign', function *() {
   this.body = sign(this.request.body, secret);
