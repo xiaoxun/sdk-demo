@@ -5,13 +5,26 @@ const secret = 'shimo-sdk-test-secret';
 
 const http = require('http');
 const koa = require('koa');
-const serve = require('koa-static');
+const is = require('type-is');
 const router = require('koa-router')();
 const views = require('koa-views');
 const bodyParser = require('koa-bodyparser');
 const sign = require('./lib/sign');
+const upload = require('./lib/upload');
 const app = koa();
-app.use(bodyParser());
+
+app.use(function *(next) {
+  // Multipart request will be handled by lib/upload_file
+  if (is(this.req, ['multipart'])) {
+    yield upload.single(this, 'file');
+    this.request.body = this.request.body || {};
+    _.assign(this.request.body, this.req.body || {});
+    yield next;
+  } else {
+    yield bodyParser.bind(this)(next);
+  }
+});
+
 router.get('/', function *() {
   yield this.render('index', {
     appKey: appKey,
